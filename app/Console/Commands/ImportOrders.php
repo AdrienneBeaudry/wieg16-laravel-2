@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\CustomerAddress;
 use Illuminate\Console\Command;
+use App\Item;
+use App\Order;
 
 class ImportOrders extends Command
 {
@@ -11,14 +14,14 @@ class ImportOrders extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'import:orders';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Import orders from JSON array.';
 
     /**
      * Create a new command instance.
@@ -46,50 +49,43 @@ class ImportOrders extends Command
         $this->info("Sending request...");
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
+
+        $this->info("Filtering array to only retain orders with status:processing...");
+        $allowed = 'processing';
+        $filtered = array_filter($result, function ($order) use ($allowed) {
+            if (stripos($order['status'], $allowed) !== false) {
+                return true;
+            }
+            return false;
+        });
+
         $this->info("Looping through orders...");
-       // $companies = [];
-        foreach ($result as $order) {
-            $this->info("Inserting/updating customer with id: ".$order['id']);
+        foreach ($filtered as $order) {
+            $this->info("Inserting/updating order with id: ".$order['id']);
             $dbOrder = Order::findOrNew($order['id']);
             $dbOrder->fill($order)->save();
 
-
-            // Importing addresses in separate table
-            if ($customer['address']==!null) {
-                $this->info("Inserting/updating address with id: ".$customer['address']['id']);
-                $dbCustomerAddress = CustomerAddress::findOrNew($customer['address']['id']);
-                $dbCustomerAddress->fill($customer['address'])->save();
+            $this->info("Inserting/updating addresses...");
+            // Importing billing address
+            if ($order['billing_address']==!null) {
+                $this->info("Inserting/updating billing address with id: ".$order['billing_address']['id']);
+                $dbItems = CustomerAddress::findOrNew($order['billing_address']['id']);
+                $dbItems->fill($order['billing_address'])->save();
             }
 
-            // Importing companies in separate table
-            $this->info("Inserting/updating customer with id: ".$customer['id']);
-            $companies[] = $customer['customer_company'];
+            // Importing shipping address
+            if ($order['shipping_address']==!null) {
+                $this->info("Inserting/updating shipping address with id: ".$order['shipping_address']['id']);
+                $dbItems = CustomerAddress::findOrNew($order['shipping_address']['id']);
+                $dbItems->fill($order['shipping_address'])->save();
+            }
+
+            if (is_array($order['items'])) {
+                foreach ($order['items'] as $item) {
+                    $dbItem = Item::findOrNew($item['id']);
+                    $dbItem->fill($item)->save();
+                }
+            }
         }
-
-        $companies = array_unique($companies);
-
-        foreach ($companies as $company) {
-            $this->info("Inserting/updating company table for ".$company);
-            /* @var Company $dbCompany */
-            $dbCompany = Company::findOrNew($company);
-            $dbCompany->company_name = $company;
-            // Another way to do it below, using fill...
-            //$dbCompany->fill(['company_name' => $company]);
-            $dbCompany->save();
-
-            /*
-             * ANOTHER WAY TO DO IT...
-             $customers = Customer::where('customer_company', '=', $dbCompany->company_name)->get();
-             foreach ($customers as $customer) {
-                 $customer->company_id = $dbCompany->id;
-                 $customer->save();
-             }
- */
-            //Update statement
-            DB::table('customers')
-                ->where('customer_company', '=', $dbCompany->company_name)
-                ->update(['company_id' => $dbCompany->id]);
-        }
-
     }
 }

@@ -14,8 +14,21 @@ class CreateItemsTable extends Migration
     public function up()
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+            $table->integer('id', false, true); // the two options mean that NOT auto-increment, and UNSIGNED
+            $table->string('order_id')->nullable();
+            $table->integer('item_id')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
+            $table->string('name')->nullable();
+            $table->string('sku')->nullable();
+            $table->integer('qty')->nullable();
+            $table->decimal('price', 10, 4)->nullable();
+            $table->decimal('tax_amount', 10, 4)->nullable();
+            $table->decimal('row_total', 10, 4)->nullable();
+            $table->decimal('price_incl_tax', 10, 4)->nullable();
+            $table->decimal('total_incl_tax', 10, 4)->nullable();
+            $table->decimal('tax_percent', 10, 4)->nullable();
+            $table->integer('amount_package')->nullable();
         });
     }
 
