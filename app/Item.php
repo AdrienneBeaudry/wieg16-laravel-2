@@ -61,4 +61,16 @@ class Item extends Model
         'tax_percent',
         'amount_package',
     ];
+
+    public function customerAddresses() {
+        return $this->hasMany(CustomerAddress::class);
+    }
+
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
+
+    public function customer() {
+        return $this->hasMany(Customer::class);
+    }
 }

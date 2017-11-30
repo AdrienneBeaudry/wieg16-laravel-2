@@ -72,4 +72,20 @@ class Order extends Model
         'shipping_tax_amount',
         'shipping_description',
     ];
+
+    public function customerAddresses() {
+        return $this->hasMany(CustomerAddress::class);
+    }
+
+    public function items(){
+        return $this->hasMany(Item::class);
+    }
+
+    public function customer() {
+        return $this->hasOne(Customer::class);
+    }
+
+    public function companies() {
+        return $this->hasMany(Company::class);
+    }
 }
