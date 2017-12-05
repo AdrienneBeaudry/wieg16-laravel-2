@@ -11,14 +11,14 @@ class GetWebPage extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'get:products';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Fetches content of product page and saves it in a file.';
 
     /**
      * Create a new command instance.
@@ -37,6 +37,15 @@ class GetWebPage extends Command
      */
     public function handle()
     {
-        //
+        $ch = curl_init("https://www.milletech.se/invoicing/export/products");
+        $fileName = "storage/app/products.json";
+        $fp = fopen($fileName, "w");
+
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
     }
 }

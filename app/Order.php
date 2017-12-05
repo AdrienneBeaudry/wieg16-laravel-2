@@ -71,6 +71,7 @@ class Order extends Model
         'shipping_amount',
         'shipping_tax_amount',
         'shipping_description',
+        'items_id',
     ];
 
     public function customerAddresses() {
@@ -86,6 +87,6 @@ class Order extends Model
     }
 
     public function companies() {
-        return $this->hasMany(Company::class);
+        return $this->hasOne(Company::class);
     }
 }
