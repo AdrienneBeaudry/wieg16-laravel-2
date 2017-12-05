@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Group;
+use App\GroupePrice;
 use Illuminate\Console\Command;
 
 class ImportProducts extends Command
@@ -48,31 +50,30 @@ class ImportProducts extends Command
         curl_close($ch);
 
         $this->info("Looping through products...");
-        foreach ($result as $product) {
-            $this->info("Inserting/updating product with sku: ".$product[0]['sku']);
-            $dbProduct = Product::findOrNew($product[0]['sku']);
-            $dbProduct->fill($product)->save();
+        
+        foreach ($result as $category) {
 
-            $this->info("Inserting/updating group prices...");
-            if ($product['group_prices']==!null) {
-                $this->info("Inserting/updating billing address with id: ".$order['billing_address']['id']);
-                $dbItems = CustomerAddress::findOrNew($order['billing_address']['id']);
-                $dbItems->fill($order['billing_address'])->save();
-            }
+            foreach ($category['products'] as $product) {
+                $this->info("Inserting/updating product with sku: ".$product['sku']);
+                $dbProduct = Product::findOrNew($product['sku']);
+                $dbProduct->fill($product)->save();
 
-            // Importing shipping address
-            if ($order['shipping_address']==!null) {
-                $this->info("Inserting/updating shipping address with id: ".$order['shipping_address']['id']);
-                $dbItems = CustomerAddress::findOrNew($order['shipping_address']['id']);
-                $dbItems->fill($order['shipping_address'])->save();
-            }
-
-            if (is_array($order['items'])) {
-                foreach ($order['items'] as $item) {
-                    $dbItem = Product::findOrNew($item['id']);
-                    $dbItem->fill($item)->save();
+                if (is_array($product['group_prices'])) {
+                    $this->info("Inserting/updating group prices");
+                    foreach ($product['group_prices'] as $groupP) {
+                        $this->info("Inserting/updating Group Price with price ID: ". $groupP['price_id']);
+                        $dbGroupP = GroupePrice::findOrNew($groupP['price_id']);
+                        $dbGroupP->fill($groupP)->save();
+                    }
                 }
             }
+
+            foreach ($category['groups'] as $group) {
+                $this->info("Inserting/updating group with id:" . $group['customer_group_id']);
+                $dbGroup = Group::findOrNew($group['customer_group_id']);
+                $dbGroup->fill($groupP)->save();
+            }
+
         }
     }
 }
