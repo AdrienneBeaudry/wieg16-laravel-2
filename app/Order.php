@@ -46,6 +46,9 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property string|null $items_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereItemsId($value)
+ * @property-read \App\Company $companies
+ * @property-read \App\Customer $customer
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CustomerAddress[] $customerAddresses
  */
 class Order extends Model
 {

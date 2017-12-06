@@ -38,6 +38,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Item whereTotalInclTax($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Item whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Customer[] $customer
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CustomerAddress[] $customerAddresses
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
  */
 class Item extends Model
 {
