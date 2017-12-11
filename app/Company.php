@@ -21,4 +21,8 @@ class Company extends Model
     protected $fillable = [
         'company_name',
     ];
+
+    public function customers(){
+        return $this->hasMany(Customer::class);
+    }
 }

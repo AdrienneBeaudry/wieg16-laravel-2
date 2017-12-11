@@ -59,4 +59,15 @@ class CustomerAddress extends Model
         'company',
         'country',
     ];
+
+    public function customer() {
+        // WHEN using belongsTo function, Laravel will expect to see a column called
+        // customer_id, which we have, so Laravel should understand and connect our two tables,
+        // meaning that our address table will simply show up embedded without our customers JSON
+        // when we visit laravel2.dev/customers
+        return $this->belongsTo(CustomerAddress::class);
+
+        // NOTE: in the case where our column name do not match what Laravel is expecting,
+        // we can simply pass on
+    }
 }

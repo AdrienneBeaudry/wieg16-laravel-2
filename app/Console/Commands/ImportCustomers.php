@@ -58,6 +58,9 @@ class ImportCustomers extends Command
             $dbCustomer->fill($customer)->save();
 
             // Importing addresses in separate table
+            // MARCUS' solution:
+            // adding the below inside the loop. Better because covers more cases, although my way worked also.
+            // if (!isset($customer[‘address’] || !is_array($customer[‘address’])) continue;
             if ($customer['address']==!null) {
                 $this->info("Inserting/updating address with id: ".$customer['address']['id']);
                 $dbCustomerAddress = CustomerAddress::findOrNew($customer['address']['id']);
@@ -77,11 +80,11 @@ class ImportCustomers extends Command
             $dbCompany = Company::findOrNew($company);
             $dbCompany->company_name = $company;
             // Another way to do it below, using fill...
-            //$dbCompany->fill(['company_name' => $company]);
+            //$dbCompany->fill(['company_name' => $company])->save();
             $dbCompany->save();
 
            /*
-            * ANOTHER WAY TO DO IT...
+            * YET ANOTHER WAY TO DO IT...
             $customers = Customer::where('customer_company', '=', $dbCompany->company_name)->get();
             foreach ($customers as $customer) {
                 $customer->company_id = $dbCompany->id;

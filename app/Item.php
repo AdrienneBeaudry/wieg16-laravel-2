@@ -65,15 +65,17 @@ class Item extends Model
         'amount_package',
     ];
 
-    public function customerAddresses() {
-        return $this->hasMany(CustomerAddress::class);
-    }
+    // NO
+   // public function customerAddresses() {
+     //   return $this->hasMany(CustomerAddress::class);
+   // }
 
     public function orders(){
-        return $this->hasMany(Order::class);
+        return $this->belongsTo(Order::class);
     }
 
-    public function customer() {
-        return $this->hasMany(Customer::class);
-    }
+    // NO
+    //public function customer() {
+    //    return $this->hasMany(Customer::class);
+    //}
 }

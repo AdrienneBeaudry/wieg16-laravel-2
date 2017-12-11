@@ -14,11 +14,11 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->bigInteger('id', false, true)->primary(); // NOT auto-increment, UNSIGNED
+            $table->bigInteger('entity_id', false, true)->primary(); // NOT auto-increment, UNSIGNED
             $table->integer('entity_type_id')->nullable();
             $table->integer('attribute_set_id')->nullable();
             $table->string('type_id')->nullable();
-            $table->integer('sku')->nullable();
+            $table->string('sku')->nullable();
             $table->integer('has_options')->nullable();
             $table->integer('required_options')->nullable();
             $table->integer('status')->nullable();

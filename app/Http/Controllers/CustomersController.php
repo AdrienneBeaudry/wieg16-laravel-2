@@ -12,6 +12,13 @@ class CustomersController extends Controller
     public function showCustomers()
     {
         return response()->json(Customer::all());
+
+        // if we want to add addresses as well, we can add the below:
+        // MARCUS' CODE:
+        // return response()->json(Customer::with(['address'])->get());
+        // in the case that we want to add several relations, to include several tables,
+        // we would have written
+        // return response()->json(Customer::with(['address.something2.something3'])->get());
     }
 
     public function showCustomer($id)
@@ -26,6 +33,15 @@ class CustomersController extends Controller
             $result = response()->json($customer);
             return $result;
         }
+
+        // MARCUS' CODE:
+        //
+        // $response = Customer::find($id) ?? ['message => 'Customer not found'];
+        // $statusCode = (is_object($response)) ? 200 : 400;
+        // return response()->json($response, $statusCode);
+        //
+        // Note: the double question mark is new from PHP7 and means if the statement is false
+        // then do the following. So if Customer ID does not exist, then return the json message stated.
     }
 
     public function showCustomerAddress($customer_id)
@@ -54,5 +70,10 @@ class CustomersController extends Controller
             $result = response()->json($customers);
             return $result;
         }
+
+        // MARCUS' code, simply:
+        // $customers = Customer::whereCompanyId($id)->get();
+        // return response()->json($customers);
+
     }
 }

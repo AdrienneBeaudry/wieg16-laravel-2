@@ -78,7 +78,7 @@ class Order extends Model
     ];
 
     public function customerAddresses() {
-        return $this->hasMany(CustomerAddress::class);
+        return $this->belongsTo(CustomerAddress::class);
     }
 
     public function items(){
@@ -86,7 +86,7 @@ class Order extends Model
     }
 
     public function customer() {
-        return $this->hasOne(Customer::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function companies() {

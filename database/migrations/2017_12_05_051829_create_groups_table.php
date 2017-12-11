@@ -14,7 +14,7 @@ class CreateGroupsTable extends Migration
     public function up()
     {
         Schema::create('groups', function (Blueprint $table) {
-            $table->tinyInteger('customer_group_id', false, true)->primary();
+            $table->tinyInteger('id', false, true)->primary();
             $table->string('customer_group_code')->nullable();
             $table->tinyInteger('tax_class_id')->nullable();
         });

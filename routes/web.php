@@ -19,4 +19,9 @@ Route::get('/customers/by-company/{id}', 'CustomersController@showCustomersByCom
 Route::get('/customers/{id}', 'CustomersController@showCustomer');
 Route::get('/customers/{id}/address', 'CustomersController@showCustomerAddress');
 
+Route::resource('products', 'ProductController');
+Route::resource('groups', 'GroupController');
+Route::resource('group-prices', 'GroupPriceController');
+
+
 

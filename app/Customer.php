@@ -47,6 +47,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Customer extends Model
 {
+    // To read more about HOW to format and write your model, the best way is to click on the MODEL
+    // and see what is possible and how the Model is written, so we know what options are available to us.
+    // CMD + B
+
+    // These two below have NO IMPACT on how the database will look like.
+    // The only thing that these two do, their only function is to communicate
+    // information to Laravel.
     public $incrementing = false;
     public $timestamps = false;
 
@@ -70,4 +77,16 @@ class Customer extends Model
         'customer_due_date_period',
         'address_id',
     ];
+
+    public function address() {
+        return $this->hasOne(CustomerAddress::class);
+    }
+
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
+
+    public function company() {
+        return $this->belongsTo(Company::class);
+    }
 }

@@ -22,7 +22,7 @@ class Group extends Model
 
     // whitelisting all table fields
     protected $fillable = [
-        'customer_group_id',
+        'id',
         'customer_group_code',
         'tax_class_id',
     ];
