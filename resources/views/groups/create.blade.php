@@ -80,7 +80,7 @@
     <div class="content">
 
         <div class="title m-b-md">
-            GROUPS // edit
+            GROUPS // create
         </div>
 
         <div>
@@ -89,7 +89,7 @@
             </div>
         </div>
 
-        {!! Form::model($group, ['method' => 'PATCH','route' => ['groups.update', $group->id]]) !!}
+        {!! Form::open(array('route' => 'groups.store','method'=>'POST')) !!}
 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">

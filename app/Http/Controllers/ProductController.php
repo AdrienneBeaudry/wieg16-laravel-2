@@ -14,7 +14,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return response()->json(Product::all());
+        $products = Product::all();
+        return view('products.index',compact('products'))
+            ->with('i', (request()->input('page', 1)));
     }
 
     /**
@@ -24,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -49,7 +51,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Product::find($id));
+        $product = Product::find($id);
+        return view('products.show',compact('product'));
     }
 
     /**
@@ -60,7 +63,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::find($id);
+        return view('products.edit', compact('product'));
     }
 
     /**
@@ -72,7 +76,12 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+        $product->fill($request->all())->save();
+
+        Session::flash('message', 'Successfully updated group.');
+        // Alternatively??
+        return response()->redirectToAction('ProductController@edit', ['id' => $id]);
     }
 
     /**
@@ -83,6 +92,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $product->delete();
+
+        Session::flash('message', 'Product successfully deleted.');
     }
 }

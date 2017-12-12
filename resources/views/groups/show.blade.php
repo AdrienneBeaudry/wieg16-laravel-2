@@ -66,21 +66,10 @@
 </head>
 <body>
 <div class="flex-center position-ref full-height">
-    @if (Route::has('login'))
-        <div class="top-right links">
-            @auth
-            <a href="{{ url('/home') }}">Home</a>
-            @else
-                <a href="{{ route('login') }}">Login</a>
-                <a href="{{ route('register') }}">Register</a>
-                @endauth
-        </div>
-    @endif
-
     <div class="content">
 
         <div class="title m-b-md">
-            GROUPS // edit
+            GROUPS // show
         </div>
 
         <div>
@@ -89,33 +78,33 @@
             </div>
         </div>
 
-        {!! Form::model($group, ['method' => 'PATCH','route' => ['groups.update', $group->id]]) !!}
-
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Group ID</strong>
-                    {!! Form::text('id', null, array('placeholder' => 'id','class' => 'form-control')) !!}
+                    {{ $group->id }}
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Customer Group Name:</strong>
-                    {!! Form::text('customer_group_code', null, array('placeholder' => 'Group Name','class' => 'form-control')) !!}
+                    {{ $group->customer_group_code }}
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Tax ID Class:</strong>
-                    {!! Form::text('tax_class_id', null, array('placeholder' => 'Tax ID Class','class' => 'form-control')) !!}
+                    {{ $group->tax_class_id }}
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
+
+
+                <a href="{{ URL::to('groups/' . $group->id . '/edit') }}"><button class="btn btn-primary">Edit</button></a>
+
             </div>
         </div>
 
-        {!! Form::close() !!}
 
     </div>
 </div>

@@ -5,17 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Group;
 use Session;
+use View;
 
 class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
-        return response()->json(Group::all());
+        // Returning JSON view:
+        // return response()->json(Group::all());
+
+        $groups = Group::all();
+        return view('groups.index',compact('groups'))
+            ->with('i', (request()->input('page', 1)));
     }
 
     /**
@@ -28,7 +34,7 @@ class GroupController extends Controller
         // Load the create form for creating new resource
         // Would need to create a view for this, I guess??
         // return View::make('groups.create');
-        return view('groups/create');
+        return view('groups.create');
     }
 
     /**
@@ -43,6 +49,7 @@ class GroupController extends Controller
         $postData = $request->all();
         $group->fill($postData)->save();
         return response()->redirectToAction('GroupController@create');
+
     }
 
     /**
@@ -53,7 +60,10 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Group::find($id));
+        //return response()->json(Group::find($id));
+
+        $group = Group::find($id);
+        return view('groups.show',compact('group'));
     }
 
     /**
@@ -64,13 +74,8 @@ class GroupController extends Controller
      */
     public function edit($id)
     {
-        $group = Group::findOrFail($id);
-        // Need to create a view to edit the below:
-        // return View::make('groups.edit')
-        //   ->with('group', $group);
-
-        return view('groups/edit');
-        //return response()->redirectToAction('GroupController@create');
+        $group = Group::find($id);
+        return view('groups.edit', compact('group'));
     }
 
     /**
@@ -82,7 +87,7 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $group = Group::findOrFail($id);
+        $group = Group::find($id);
         $group->fill($request->all())->save();
 
         Session::flash('message', 'Successfully updated group.');

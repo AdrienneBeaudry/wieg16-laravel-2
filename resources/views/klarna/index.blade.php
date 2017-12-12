@@ -17,18 +17,7 @@
             color: #636b6f;
             font-family: 'Raleway', sans-serif;
             font-weight: 100;
-            height: 100vh;
             margin: 0;
-        }
-
-        .full-height {
-            height: 100vh;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
         }
 
         .position-ref {
@@ -43,6 +32,8 @@
 
         .content {
             text-align: center;
+            max-width: 640px;
+            margin: 0 auto;
         }
 
         .title {
@@ -78,46 +69,14 @@
     @endif
 
     <div class="content">
-
         <div class="title m-b-md">
-            GROUPS // edit
+            Klarna
         </div>
-
-        <div>
-            <div class="m-b-md">
-                <a class="btn btn-primary" href="{{ route('groups.index') }}">Back to Group Index</a>
-            </div>
-        </div>
-
-        {!! Form::model($group, ['method' => 'PATCH','route' => ['groups.update', $group->id]]) !!}
-
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Group ID</strong>
-                    {!! Form::text('id', null, array('placeholder' => 'id','class' => 'form-control')) !!}
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Customer Group Name:</strong>
-                    {!! Form::text('customer_group_code', null, array('placeholder' => 'Group Name','class' => 'form-control')) !!}
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Tax ID Class:</strong>
-                    {!! Form::text('tax_class_id', null, array('placeholder' => 'Tax ID Class','class' => 'form-control')) !!}
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-
-        {!! Form::close() !!}
+        <div>{!! $checkout['html_snippet'] !!}</div>
 
     </div>
+
+
 </div>
 </body>
 </html>
