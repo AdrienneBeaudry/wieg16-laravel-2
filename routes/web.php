@@ -25,6 +25,7 @@ Route::resource('group-prices', 'GroupPriceController');
 
 Route::get('/klarna', 'KlarnaController@index');
 Route::get('/klarna-confirmation', 'KlarnaController@confirmation');
+Route::get('/klarna-acknowledge', 'KlarnaController@acknowledge');
 
 
 
